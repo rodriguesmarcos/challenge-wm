@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useSelectContext } from '../Select';
@@ -11,8 +11,6 @@ const Option = ({ children, value }) => {
     selectOption(value, children);
     close();
   };
-
-  useEffect(() => {}, []);
 
   return (
     <Container

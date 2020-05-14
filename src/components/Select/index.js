@@ -56,6 +56,23 @@ const Select = ({ children, label, onChange, value, ...rest }) => {
   };
 
   useEffect(() => {
+    const items = children.map((child) =>
+      child.props && child.props.value === value ? child : null
+    );
+
+    if (items.length > 0) {
+      const selected = items.filter((child) => child !== null);
+
+      if (selected.length > 0) {
+        setSelectedObject({
+          label: selected[0].props.children,
+          value: selected[0].props.value,
+        });
+      }
+    }
+  }, [value, children]);
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (
         isOpen &&
@@ -93,10 +110,9 @@ const Select = ({ children, label, onChange, value, ...rest }) => {
 
 Select.propTypes = {
   children: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([

@@ -5,7 +5,9 @@ import SelectComponent from '../Select';
 
 import Button from '../Button';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  margin-bottom: 50px;
+`;
 
 export const Header = styled.div`
   display: flex;
@@ -96,34 +98,6 @@ export const LabelText = styled.span`
   padding-left: 5px;
 `;
 
-export const FieldsdGrid = styled.div`
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: 1;
-  margin: 20px 0;
-  @media (min-width: 600px) {
-    grid-template-areas:
-      'a a b c'
-      'd e f f';
-  }
-`;
-
-export const FieldGroup = styled.div`
-  display: grid;
-  grid-gap: 20px;
-  grid-area: a;
-
-  @media (min-width: 600px) {
-    display: flex;
-  }
-`;
-
-export const FieldColumn = styled.div`
-  &.field-version {
-    grid-area: f;
-  }
-`;
-
 export const TextInput = styled(TextInputComponent).attrs({
   containerStyle: {
     width: '100%',
@@ -132,6 +106,31 @@ export const TextInput = styled(TextInputComponent).attrs({
   flex: 1;
 `;
 
-export const Select = styled(SelectComponent)`
-  flex: 1;
+export const Select = styled(SelectComponent)``;
+
+export const Fields = styled.div`
+  width: 100%;
+`;
+export const FieldsRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: -10px;
+  margin-right: -10px;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+  }
+`;
+export const FieldsColumn = styled.div`
+  padding: 10px;
+  flex: 0 0 100%;
+
+  @media (min-width: 600px) {
+    flex: 0 0 ${({ size }) => `${size}%`};
+    max-width: ${({ size }) => `${size}%`};
+
+    &.column-location {
+      display: flex;
+    }
+  }
 `;

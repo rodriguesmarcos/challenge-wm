@@ -67,6 +67,9 @@ export const Selected = styled.div`
   align-items: center;
   outline: none;
   /* z-index: ${({ isOpen }) => (isOpen ? 20 : 10)}; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   ${({ isOpen }) =>
     isOpen &&

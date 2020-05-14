@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import VehicleCard from '../VehicleCard';
+
 import { Container } from './styles';
 
 const VehicleList = ({ data, ...rest }) => {
   return (
     <Container {...rest}>
-      {data.map(({ ID, Make }) => (
-        <h1 key={ID}>{Make}</h1>
+      {data.map((vehicle) => (
+        <VehicleCard key={vehicle.ID} vehicle={vehicle} />
       ))}
     </Container>
   );

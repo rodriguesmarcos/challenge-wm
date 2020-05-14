@@ -14,3 +14,8 @@ export const Input = styled.input.attrs({ type: 'text' })`
   flex: 1;
   padding: 5px;
 `;
+
+export const Left = styled.div`
+  flex: 1 0 auto;
+`;
+export const Right = styled(Left)``;

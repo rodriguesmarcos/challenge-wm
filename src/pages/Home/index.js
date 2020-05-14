@@ -13,7 +13,7 @@ const Home = () => {
 
   const filterVehicles = () => {
     if (filters) {
-      const filterEntries = Object.entries(filters);
+      // const filterEntries = Object.entries(filters);
 
       return vehicles.filter((el) => el.Make === filters.make);
       // @TODO filter items
@@ -24,7 +24,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchVehicles = async (page = 1) => {
-      const { data, ...rest } = await api.get('/Vehicles', {
+      const { data } = await api.get('/Vehicles', {
         params: {
           Page: page,
         },
@@ -38,7 +38,7 @@ const Home = () => {
     <Container>
       <Search onSubmit={setFilters} />
 
-      {/* <VehicleList data={filterVehicles()} /> */}
+      <VehicleList data={filterVehicles()} />
     </Container>
   );
 };

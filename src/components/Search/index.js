@@ -29,11 +29,11 @@ import {
   Checkbox,
   Label,
   LabelText,
-  FieldsdGrid,
-  FieldGroup,
-  FieldColumn,
   TextInput,
   Select,
+  Fields,
+  FieldsRow,
+  FieldsColumn,
 } from './styles';
 
 const SearchContext = createContext();
@@ -83,7 +83,7 @@ const formReducer = (state, { type, payload }) => {
       return { ...state, year: payload.value };
 
     case 'CHANGE_PRICE':
-      return { ...state, price: payload.value };
+      return { ...state, priceRange: payload.value };
 
     case 'CHANGE_VERSION':
       return { ...state, version: payload.value };
@@ -117,6 +117,12 @@ const Search = ({ onSubmit, ...rest }) => {
 
   const value = { state };
 
+  const resetForm = () => {
+    dispatch({
+      type: 'RESET_FORM',
+    });
+  };
+
   const onChangeVehicleType = (vehicle) => {
     dispatch({
       type: 'CHANGE_VEHICLE',
@@ -124,6 +130,7 @@ const Search = ({ onSubmit, ...rest }) => {
         value: vehicle,
       },
     });
+    resetForm();
   };
 
   const onChangeStatus = (status) => {
@@ -155,12 +162,6 @@ const Search = ({ onSubmit, ...rest }) => {
     });
   };
 
-  const resetForm = () => {
-    dispatch({
-      type: 'RESET_FORM',
-    });
-  };
-
   const changeSelectValue = (type) => (value) => {
     dispatch({
       type,
@@ -171,13 +172,10 @@ const Search = ({ onSubmit, ...rest }) => {
   };
 
   const getNameById = (id, type) => {
-    console.log(id, type);
     if (type.length > 0) {
       const result = type
         .filter(({ ID }) => ID === Number(id))
         .reduce((acc, curr) => curr.Name, '');
-
-      console.log('result', result);
       return result;
     }
 
@@ -187,7 +185,7 @@ const Search = ({ onSubmit, ...rest }) => {
   const removeEmptyFilters = (obj) => {
     const newObj = {};
     for (var key in obj) {
-      if (obj[key] !== null && obj[key] != '' && obj[key] !== -1)
+      if (obj[key] !== null && obj[key] !== '' && obj[key] !== -1)
         newObj[key] = obj[key];
     }
     return newObj;
@@ -282,117 +280,116 @@ const Search = ({ onSubmit, ...rest }) => {
             ))}
           </div>
 
-          <FieldsdGrid>
-            <FieldGroup className="groupA">
-              <TextInput
-                ref={locationRef}
-                value={location}
-                onChange={changeLocation}
-                innerLeft={
-                  <div>
-                    <FiMapPin />
-                    <LabelText>Onde</LabelText>
-                  </div>
-                }
-                innerRight={
-                  location && <AiFillCloseCircle onClick={resetLocation} />
-                }
-              />
-              <Select
-                label="Raio"
-                value={radius}
-                onChange={changeSelectValue('CHANGE_RADIUS')}
-              >
-                {radiusOptions.map(({ value, label }) => (
-                  <Option key={value} value={value}>
-                    {label}
-                  </Option>
-                ))}
-              </Select>
-            </FieldGroup>
-
-            <div>
-              <Select
-                onChange={changeSelectValue('CHANGE_MAKE')}
-                label="Marca"
-                value={make}
-              >
-                <Option value={-1}>Todas</Option>
-                {makes.map((make) => (
-                  <Option key={make.ID} value={make.ID}>
-                    {make.Name}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-
-            <div>
-              <Select
-                onChange={changeSelectValue('CHANGE_MODEL')}
-                label="Modelo"
-                value={model}
-              >
-                <Option value={-1}>Todas</Option>
-                {models.map(({ ID, Name }) => (
-                  <Option key={ID} value={ID}>
-                    {Name}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-
-            <div>
-              <Select
-                label="Ano Desejado"
-                value={year}
-                onChange={changeSelectValue('CHANGE_YEAR')}
-              >
-                <Option value={-1}>Todos</Option>
-                {years.map(({ value, label }) => (
-                  <Option key={value} value={value}>
-                    {label}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-
-            <div>
-              <Select
-                value={priceRange}
-                label="Faixa de preços"
-                onChange={changeSelectValue('CHANGE_PRICE')}
-              >
-                <Option value={-1}>Todos</Option>
-                {prices.map(({ value, label }) => (
-                  <Option key={value} value={value}>
-                    {label}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-
-            <FieldColumn className="field-version">
-              <Select
-                onChange={(value) =>
-                  dispatch({
-                    type: 'CHANGE_VERSION',
-                    payload: {
-                      value,
-                    },
-                  })
-                }
-                value={version}
-                label="Versão"
-              >
-                <Option value={-1}>Todas</Option>
-                {versions.map(({ ID, Name }) => (
-                  <Option key={ID} value={ID}>
-                    {Name}
-                  </Option>
-                ))}
-              </Select>
-            </FieldColumn>
-          </FieldsdGrid>
+          <Fields>
+            <FieldsRow>
+              <FieldsColumn className="column-location" size="50">
+                <TextInput
+                  ref={locationRef}
+                  value={location}
+                  onChange={changeLocation}
+                  innerLeft={
+                    <div>
+                      <FiMapPin />
+                      <LabelText>Onde</LabelText>
+                    </div>
+                  }
+                  innerRight={
+                    location && <AiFillCloseCircle onClick={resetLocation} />
+                  }
+                />
+                <Select
+                  label="Raio"
+                  value={radius}
+                  onChange={changeSelectValue('CHANGE_RADIUS')}
+                >
+                  {radiusOptions.map(({ value, label }) => (
+                    <Option key={value} value={value}>
+                      {label}
+                    </Option>
+                  ))}
+                </Select>
+              </FieldsColumn>
+              <FieldsColumn size="25">
+                <Select
+                  onChange={changeSelectValue('CHANGE_MAKE')}
+                  label="Marca"
+                  value={make}
+                >
+                  <Option value={-1}>Todas</Option>
+                  {makes.map((make) => (
+                    <Option key={make.ID} value={make.ID}>
+                      {make.Name}
+                    </Option>
+                  ))}
+                </Select>
+              </FieldsColumn>
+              <FieldsColumn size="25">
+                <Select
+                  onChange={changeSelectValue('CHANGE_MODEL')}
+                  label="Modelo"
+                  value={model}
+                >
+                  <Option value={-1}>Todas</Option>
+                  {models.map(({ ID, Name }) => (
+                    <Option key={ID} value={ID}>
+                      {Name}
+                    </Option>
+                  ))}
+                </Select>
+              </FieldsColumn>
+            </FieldsRow>
+            <FieldsRow>
+              <FieldsColumn size="25">
+                <Select
+                  label="Ano Desejado"
+                  value={year}
+                  onChange={changeSelectValue('CHANGE_YEAR')}
+                >
+                  <Option value={-1}>Todos</Option>
+                  {years.map(({ value, label }) => (
+                    <Option key={value} value={value}>
+                      {label}
+                    </Option>
+                  ))}
+                </Select>
+              </FieldsColumn>
+              <FieldsColumn size="25">
+                <Select
+                  value={priceRange}
+                  label="Faixa de preços"
+                  onChange={changeSelectValue('CHANGE_PRICE')}
+                >
+                  <Option value={-1}>Todos</Option>
+                  {prices.map(({ value, label }) => (
+                    <Option key={value} value={value}>
+                      {label}
+                    </Option>
+                  ))}
+                </Select>
+              </FieldsColumn>
+              <FieldsColumn size="50">
+                <Select
+                  onChange={(value) =>
+                    dispatch({
+                      type: 'CHANGE_VERSION',
+                      payload: {
+                        value,
+                      },
+                    })
+                  }
+                  value={version}
+                  label="Versão"
+                >
+                  <Option value={-1}>Todas</Option>
+                  {versions.map(({ ID, Name }) => (
+                    <Option key={ID} value={ID}>
+                      {Name}
+                    </Option>
+                  ))}
+                </Select>
+              </FieldsColumn>
+            </FieldsRow>
+          </Fields>
 
           <MainFooter>
             <AdvancedSearchButton buttonStyle="link" onClick={() => null}>

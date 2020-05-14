@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Input } from './styles';
+import { Container, Input, Left, Right } from './styles';
 
 const TextInput = React.forwardRef(
   ({ innerLeft, innerRight, containerStyle, ...rest }, ref) => {
@@ -12,14 +12,14 @@ const TextInput = React.forwardRef(
 
     return (
       <Container style={containerStyle}>
-        {innerLeft && <div onClick={focusInput}>{innerLeft}</div>}
+        {innerLeft && <Left onClick={focusInput}>{innerLeft}</Left>}
         <Input
           {...rest}
           ref={(el) => {
             setInputEl(el);
           }}
         />
-        {innerRight && <div onClick={focusInput}>{innerRight}</div>}
+        {innerRight && <Right onClick={focusInput}>{innerRight}</Right>}
       </Container>
     );
   }
